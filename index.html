@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/Logo/r1/favicon.ico" type="image/x-icon">
+    <title>Hanslo Studio | IT Development</title>
+    <style>
+        :root {
+            --bg-dark: #050505;
+            --bg-darker: #000000;
+            --text-white: #ffffff;
+            --text-light: #e0e0e0;
+            --text-gray: #a0a0a0;
+            --accent-line: rgba(255, 255, 255, 0.1);
+            --accent-color: #6d28d9;
+            --accent-hover: #8b5cf6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--bg-dark), var(--bg-darker));
+            color: var(--text-white);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 20px;
+        }
+        
+        .studio-info {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .studio-name {
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        
+        .leader-name {
+            font-size: 14px;
+            color: var(--text-gray);
+            margin-bottom: 20px;
+            min-height: 20px;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .leader-name.hidden {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        
+        .join-button-container {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .join-button, .meet-team-button {
+            position: relative;
+            padding: 12px 30px;
+            background: transparent;
+            color: var(--text-white);
+            border: 1px solid var(--accent-line);
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+        
+        .join-button::before, .meet-team-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(249, 248, 250, 0.2), 
+                transparent);
+            transition: all 0.6s ease;
+            z-index: -1;
+        }
+        
+        .join-button:hover::before, .meet-team-button:hover::before {
+            left: 100%;
+        }
+        
+        .join-button:hover, .meet-team-button:hover {
+            border-color: #ffffff;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+        
+        .join-button-text, .meet-team-text {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .join-button:hover .join-button-text, .meet-team-button:hover .meet-team-text {
+            background: linear-gradient(90deg, #e1dfe4, #e0d6f0, #dad9db);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShine 2s linear infinite;
+        }
+        
+        @keyframes textShine {
+            0% {
+                background-position: 0% center;
+            }
+            100% {
+                background-position: 200% center;
+            }
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .project-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--accent-line);
+            padding: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .project-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-5px);
+        }
+        
+        .project-image {
+            width: 100%;
+            height: 160px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(30%);
+            transition: all 0.4s ease;
+        }
+        
+        .project-card:hover img {
+            filter: grayscale(0%);
+            transform: scale(1.02);
+        }
+        
+        .project-title {
+            font-size: 16px;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        
+        .project-desc {
+            font-size: 12px;
+            color: var(--text-gray);
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+        
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        
+        .tag {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            padding: 3px 8px;
+            font-size: 10px;
+            border-radius: 0;
+        }
+        
+        .contacts {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--text-gray);
+        }
+        
+        .contact-link {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: inline-block;
+            margin: 0 5px;
+        }
+        
+        .contact-link:hover {
+            color: var(--text-white);
+        }
+        
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .modal-content {
+            background: var(--bg-dark);
+            border: 1px solid var(--accent-line);
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-image {
+            width: 100%;
+            height: 300px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .modal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .modal-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--accent-color);
+        }
+        
+        .modal-desc {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+        
+        .modal-features {
+            margin-bottom: 25px;
+        }
+        
+        .modal-features h4 {
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: var(--text-white);
+        }
+        
+        .modal-features ul {
+            padding-left: 20px;
+            font-size: 14px;
+            color: var(--text-gray);
+            line-height: 1.6;
+            list-style-type: none;
+        }
+        
+        .modal-features li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+        }
+        
+        .modal-features li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-size: 18px;
+        }
+        
+        .project-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            border-radius: 0;
+            transition: all 0.2s ease;
+        }
+        
+        .project-link:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+        
+        .project-link.secondary {
+            background: transparent;
+            border: 1px solid var(--accent-line);
+            color: var(--text-light);
+        }
+        
+        .project-link.secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-white);
+        }
+        
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Page transition */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-darker);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        
+        .page-transition.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        /* Адаптация под маленькие экраны */
+        @media (max-height: 800px) {
+            .main-content {
+                transform: scale(0.9);
+            }
+        }
+        
+        @media (max-height: 700px) {
+            .main-content {
+                transform: scale(0.8);
+            }
+        }
+        
+        @media (max-height: 600px) {
+            .main-content {
+                transform: scale(0.7);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .modal-image {
+                height: 200px;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
+            
+            .project-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .project-link {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-transition" id="pageTransition"></div>
+    
+    <div class="main-content">
+        <div class="studio-info">
+            <div class="studio-name">HANSLØ STUDIO</div>
+            <div class="leader-name" id="quote-text">От людей для богатых людей. - Jacko Friesko</div>
+        </div>
+        
+        <div class="join-button-container">
+            <button class="join-button" id="joinButton">
+                <span class="join-button-text">Присоединиться к студии</span>
+            </button>
+            <button class="meet-team-button" id="meetTeamButton">
+                <span class="meet-team-text">Познакомиться с командой</span>
+            </button>
+        </div>
+        
+        <div class="projects-grid">
+            <div class="project-card" data-project="1">
+                <div class="project-image">
+                    <img src="https://i.pinimg.com/originals/31/b2/20/31b2209d0130168b2bae5896a140a438.png" alt="Проект 1">
+                </div>
+                <h3 class="project-title">Веб-платформа для аналитики</h3>
+                <p class="project-desc">Система мониторинга данных в реальном времени с API-интеграциями.</p>
+                <div class="project-tags">
+                    <span class="tag">Next.js</span>
+                    <span class="tag">TypeScript</span>
+                    <span class="tag">Tailwind</span>
+                </div>
+            </div>
+            
+            <div class="project-card" data-project="2">
+                <div class="project-image">
+                    <img src="https://static.tildacdn.com/tild6332-3439-4438-b736-313861366535/image.png" alt="Проект 2">
+                </div>
+                <h3 class="project-title">Мобильное приложение для трекинга</h3>
+                <p class="project-desc">Приложение для учёта персональных активностей с синхронизацией в облако.</p>
+                <div class="project-tags">
+                    <span class="tag">Flutter</span>
+                    <span class="tag">Firebase</span>
+                </div>
+            </div>
+            
+            <div class="project-card" data-project="3">
+                <div class="project-image">
+                    <img src="https://cdn.dribbble.com/userupload/33955570/file/original-7457fef289683df220f1024f50c507d0.png?resize=1600x1200" alt="Проект 3">
+                </div>
+                <h3 class="project-title">Интернет-регистрация (Headless)</h3>
+                <p class="project-desc">Кастомная CMS на основе Strapi с React-фронтендом.</p>
+                <div class="project-tags">
+                    <span class="tag">React</span>
+                    <span class="tag">Strapi</span>
+                    <span class="tag">GraphQL</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="contacts">
+            <a href="mailto:contact@hanslo.studio" class="contact-link">Email</a>
+            <span>•</span>
+            <a href="https://t.me/vu4eke" class="contact-link">Telegram</a>
+            <span>•</span>
+            <a href="https://github.com/hanslo-dev" class="contact-link">GitHub</a>
+        </div>
+    </div>
+    
+    <!-- Модальные окна для проектов -->
+    <div id="project-modal-1" class="modal">
+        <div class="modal-content">
+            <div class="modal-image">
+                <img src="https://i.pinimg.com/originals/31/b2/20/31b2209d0130168b2bae5896a140a438.png" alt="Веб-платформа для аналитики">
+            </div>
+            <h3 class="modal-title">Веб-платформа для аналитики</h3>
+            <p class="modal-desc">
+                Полноценная система мониторинга бизнес-метрик в реальном времени с возможностью интеграции 
+                с различными API и сервисами. Платформа предоставляет интуитивно понятный интерфейс для 
+                визуализации данных, настройки дашбордов и автоматических отчетов.
+            </p>
+            <div class="modal-features">
+                <h4>Основные возможности:</h4>
+                <ul>
+                    <li>Реалтайм-аналитика ключевых показателей</li>
+                    <li>Интеграция с 50+ популярными сервисами</li>
+                    <li>Кастомизируемые дашборды</li>
+                    <li>Автоматические отчеты и алерты</li>
+                    <li>Глубокая сегментация данных</li>
+                </ul>
+            </div>
+            <div class="project-tags">
+                <span class="tag">Next.js</span>
+                <span class="tag">TypeScript</span>
+                <span class="tag">Tailwind</span>
+                <span class="tag">Node.js</span>
+                <span class="tag">PostgreSQL</span>
+            </div>
+            <div class="project-links">
+                <a href="https://example.com/analytics-platform" class="project-link" target="_blank">Посетить сайт</a>
+                <a href="https://github.com/hanslo-dev/analytics-platform" class="project-link secondary" target="_blank">Исходный код</a>
+            </div>
+        </div>
+    </div>
+    
+    <div id="project-modal-2" class="modal">
+        <div class="modal-content">
+            <div class="modal-image">
+                <img src="https://static.tildacdn.com/tild6332-3439-4438-b736-313861366535/image.png" alt="Мобильное приложение для трекинга">
+            </div>
+            <h3 class="modal-title">Мобильное приложение для трекинга</h3>
+            <p class="modal-desc">
+                Кроссплатформенное приложение для учета персональных активностей, привычек и продуктивности. 
+                Синхронизация данных между устройствами через облако, статистика и аналитика прогресса, 
+                мотивационные уведомления и система достижений.
+            </p>
+            <div class="modal-features">
+                <h4>Основные возможности:</h4>
+                <ul>
+                    <li>Трекинг привычек и активностей</li>
+                    <li>Кастомизируемые напоминания</li>
+                    <li>Детальная статистика и графики</li>
+                    <li>Мультиплатформенная синхронизация</li>
+                    <li>Система мотивации и достижений</li>
+                </ul>
+            </div>
+            <div class="project-tags">
+                <span class="tag">Flutter</span>
+                <span class="tag">Firebase</span>
+                <span class="tag">Dart</span>
+                <span class="tag">BLoC</span>
+            </div>
+            <div class="project-links">
+                <a href="https://play.google.com/store/apps/details?id=com.hanslo.tracker" class="project-link" target="_blank">Google Play</a>
+                <a href="https://apps.apple.com/app/hanslo-tracker/id123456789" class="project-link" target="_blank">App Store</a>
+            </div>
+        </div>
+    </div>
+    
+    <div id="project-modal-3" class="modal">
+        <div class="modal-content">
+            <div class="modal-image">
+                <img src="https://cdn.dribbble.com/userupload/33955570/file/original-7457fef289683df220f1024f50c507d0.png?resize=1600x1200" alt="Интернет-регистрация">
+            </div>
+            <h3 class="modal-title">Интернет-регистрация (Headless)</h3>
+            <p class="modal-desc">
+                Кастомная система управления контентом на основе Strapi с React-фронтендом. Решение позволяет 
+                легко управлять структурай и содержимым сайта без необходимости писать код, при этом 
+                предоставляя полную свободу для кастомизации через API.
+            </p>
+            <div class="modal-features">
+                <h4>Основные возможности:</h4>
+                <ul>
+                    <li>Гибкая система управления контентом</li>
+                    <li>GraphQL API для интеграций</li>
+                    <li>Кастомизируемые типы контента</li>
+                    <li>Ролевая модель доступа</li>
+                    <li>Мультиязычная поддержка</li>
+                </ul>
+            </div>
+            <div class="project-tags">
+                <span class="tag">React</span>
+                <span class="tag">Strapi</span>
+                <span class="tag">GraphQL</span>
+                <span class="tag">SCSS</span>
+            </div>
+            <div class="project-links">
+                <a href="https://example.com/cms-demo" class="project-link" target="_blank">Демо-версия</a>
+                <a href="https://github.com/hanslo-dev/headless-cms" class="project-link secondary" target="_blank">Исходный код</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Массив цитат
+        const quotes = [
+            "Мечты для тех, кто не спит. — Vu4eke",
+            "Без правил, но с деньгами. — Jacko Friesko",
+            "Слова – ветер, дела – ураган. — Vu4eke",
+            "Не жди удачи – создавай её. — Jacko Friesko",
+            "Я не лидер – я тот, за кем идут. — Vu4eke",
+            "Деньги любят не шум, а тихий расчёт. — Jacko Friesko",
+            "От людей для богатых людей. — Jacko Friesko"
+        ];
+        
+        // Функция для рандомной смены цитат с анимацией
+        function changeQuote() {
+            const quoteElement = document.getElementById('quote-text');
+            let currentIndex = 0;
+            
+            // Меняем цитату каждые 5 секунд
+            setInterval(() => {
+                let newIndex;
+                do {
+                    newIndex = Math.floor(Math.random() * quotes.length);
+                } while (newIndex === currentIndex && quotes.length > 1);
+                
+                currentIndex = newIndex;
+                
+                // Анимация исчезновения
+                quoteElement.classList.add('hidden');
+                
+                setTimeout(() => {
+                    quoteElement.textContent = quotes[currentIndex];
+                    quoteElement.classList.remove('hidden');
+                }, 500);
+            }, 5000);
+        }
+        
+        // Функции для работы с модальными окнами
+        function setupModals() {
+            // Получаем все карточки проектов
+            const projectCards = document.querySelectorAll('.project-card');
+            
+            // Добавляем обработчик клика для каждой карточки
+            projectCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const projectId = card.getAttribute('data-project');
+                    const modal = document.getElementById(`project-modal-${projectId}`);
+                    
+                    // Показываем модальное окно с анимацией
+                    modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                    
+                    // Запускаем анимацию после отображения
+                    setTimeout(() => {
+                        modal.classList.add('show');
+                    }, 10);
+                });
+            });
+            
+            // Закрытие при клике вне модального окна
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.remove('show');
+                        
+                        setTimeout(() => {
+                            this.style.display = 'none';
+                            document.body.style.overflow = 'auto';
+                        }, 300);
+                    }
+                });
+            });
+            
+            // Закрытие по ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.modal.show').forEach(modal => {
+                        modal.classList.remove('show');
+                        
+                        setTimeout(() => {
+                            modal.style.display = 'none';
+                            document.body.style.overflow = 'auto';
+                        }, 300);
+                    });
+                }
+            });
+        }
+        
+        // Функция для обработки кнопки присоединения
+        function setupJoinButton() {
+            const joinButton = document.getElementById('joinButton');
+            const pageTransition = document.getElementById('pageTransition');
+            
+            joinButton.addEventListener('click', function() {
+                // Активируем анимацию перехода
+                pageTransition.classList.add('active');
+                
+                // Через 500ms переходим на новую страницу
+                setTimeout(() => {
+                    window.location.href = 'jts.html';
+                }, 500);
+            });
+        }
+        
+        // Функция для обработки кнопки "Познакомиться с командой"
+        function setupMeetTeamButton() {
+            const meetTeamButton = document.getElementById('meetTeamButton');
+            const pageTransition = document.getElementById('pageTransition');
+            
+            meetTeamButton.addEventListener('click', function() {
+                // Активируем анимацию перехода
+                pageTransition.classList.add('active');
+                
+                // Через 500ms переходим на новую страницу
+                setTimeout(() => {
+                    window.location.href = 'meet-the-team.html';
+                }, 500);
+            });
+        }
+        
+        // Инициализация при загрузке страницы
+        window.addEventListener('DOMContentLoaded', () => {
+            changeQuote();
+            setupModals();
+            setupJoinButton();
+            setupMeetTeamButton();
+        });
+    </script>
+</body>
+</html>

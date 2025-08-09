@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/Logo/jts/favicon.ico" type="image/x-icon">
+    <title>Join Hanslo Studio</title>
+    <style>
+        :root {
+            --bg-dark: #050505;
+            --bg-darker: #000000;
+            --text-white: #ffffff;
+            --text-light: #e0e0e0;
+            --text-gray: #a0a0a0;
+            --accent-line: rgba(255, 255, 255, 0.1);
+            --accent-color: #6d28d9;
+            --accent-hover: #8b5cf6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--bg-dark), var(--bg-darker));
+            color: var(--text-white);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            transform: scale(0.9);
+            transform-origin: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .studio-info {
+            margin-bottom: 2vh;
+            text-align: center;
+        }
+        
+        .studio-name {
+            font-size: 20px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 2vh;
+            text-align: center;
+            background: linear-gradient(90deg, #e1dfe4, #e0d6f0, #dad9db);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShine 3s linear infinite;
+        }
+        
+        .page-subtitle {
+            font-size: 12px;
+            color: var(--text-gray);
+            text-align: center;
+            margin-bottom: 3vh;
+            line-height: 1.4;
+            max-width: 80%;
+        }
+        
+        .join-form {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--accent-line);
+            padding: 15px;
+            width: 90%;
+            max-width: 400px;
+            margin-bottom: 2vh;
+        }
+        
+        .form-group {
+            margin-bottom: 10px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 8px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--accent-line);
+            color: var(--text-white);
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+        
+        .form-textarea {
+            min-height: 80px;
+            resize: none;
+        }
+        
+        /* Обновленный стиль для выбора роли - всегда в одну линию */
+        .role-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+            scrollbar-width: none; /* Для Firefox */
+        }
+        
+        .role-selector::-webkit-scrollbar {
+            display: none; /* Для Chrome/Safari */
+        }
+        
+        .role-option {
+            flex: 1 0 auto;
+            padding: 6px 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--accent-line);
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            text-align: center;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .role-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .role-option.selected {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+        
+        /* Кнопки в один ряд */
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .submit-button {
+            flex: 1;
+            padding: 8px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .submit-button:hover {
+            background: var(--accent-hover);
+        }
+        
+        .back-button {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            background: transparent;
+            color: var(--text-light);
+            border: 1px solid var(--accent-line);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+        
+        .back-button:hover {
+            border-color: var(--text-white);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .back-button svg {
+            margin-right: 5px;
+            width: 12px;
+            height: 12px;
+        }
+        
+        .form-note {
+            font-size: 10px;
+            color: var(--text-gray);
+            margin-top: 2vh;
+            text-align: center;
+            line-height: 1.4;
+            max-width: 80%;
+        }
+        
+        /* Сообщение после отправки */
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .success-message h2 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--text-white);
+        }
+        
+        .success-message p {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        
+        @keyframes textShine {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+        
+        /* Адаптивное масштабирование */
+        @media (max-height: 700px) {
+            .main-content { transform: scale(0.8); }
+            .page-title { font-size: 20px; }
+            .join-form { padding: 10px; }
+            .role-option { padding: 5px 6px; font-size: 10px; }
+        }
+        
+        @media (max-height: 600px) {
+            .main-content { transform: scale(0.7); }
+            .page-title { font-size: 18px; }
+            .page-subtitle { display: none; }
+            .form-note { display: none; }
+            .role-option { padding: 4px 5px; font-size: 9px; }
+        }
+        
+        @media (max-height: 500px) {
+            .main-content { transform: scale(0.6); }
+            .studio-name { font-size: 16px; }
+            .role-option { padding: 3px 4px; font-size: 8px; }
+        }
+        
+        /* Для очень узких экранов */
+        @media (max-width: 350px) {
+            .role-option { padding: 4px 5px; font-size: 9px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <div class="studio-info">
+            <div class="studio-name">HANSLØ STUDIO</div>
+        </div>
+        
+        <h1 class="page-title">Присоединиться к команде</h1>
+        <p class="page-subtitle">Заполните анкету, чтобы мы могли оценить ваш потенциал</p>
+        
+        <form class="join-form" id="joinForm">
+            <div class="form-group">
+                <label for="fullname" class="form-label">Полное имя</label>
+                <input type="text" id="fullname" class="form-input" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" class="form-input" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Роль</label>
+                <div class="role-selector">
+                    <div class="role-option" data-value="frontend">Frontend</div>
+                    <div class="role-option" data-value="backend">Backend</div>
+                    <div class="role-option" data-value="designer">Дизайнер</div>
+                    <div class="role-option" data-value="pm">Менеджер</div>
+                    <div class="role-option" data-value="other">Другое</div>
+                </div>
+                <input type="hidden" id="role" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="message" class="form-label">Почему вы хотите к нам?</label>
+                <textarea id="message" class="form-input form-textarea" required></textarea>
+            </div>
+            
+            <div class="form-buttons">
+                <button type="submit" class="submit-button">Отправить</button>
+                <a href="index.html" class="back-button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Назад
+                </a>
+            </div>
+        </form>
+        
+        <div class="success-message" id="successMessage">
+            <h2>Спасибо за заявку!</h2>
+            <p>Мы свяжемся с вами в ближайшее время.</p>
+        </div>
+        
+        <p class="form-note">
+            Мы рассмотрим вашу заявку в течение 3-5 дней
+        </p>
+    </div>
+    
+    <script>
+        // Автоматическое масштабирование под экран
+        function adjustScale() {
+            const content = document.querySelector('.main-content');
+            const vh = window.innerHeight;
+            let scale = 1;
+            
+            if (vh < 700) scale = 0.8;
+            if (vh < 600) scale = 0.7;
+            if (vh < 500) scale = 0.6;
+            
+            content.style.transform = `scale(${scale})`;
+        }
+        
+        // Инициализация при загрузке и изменении размера
+        window.addEventListener('load', adjustScale);
+        window.addEventListener('resize', adjustScale);
+        
+        // Кастомный выбор роли
+        document.querySelectorAll('.role-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.role-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.classList.add('selected');
+                document.getElementById('role').value = this.dataset.value;
+            });
+        });
+        
+        // Обработка формы
+        document.getElementById('joinForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Проверка выбора роли
+            if (!document.getElementById('role').value) {
+                alert('Пожалуйста, выберите роль');
+                return;
+            }
+            
+            // Скрываем форму и показываем сообщение
+            this.style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // Здесь можно добавить отправку данных на сервер
+        });
+    </script>
+</body>
+</html>
